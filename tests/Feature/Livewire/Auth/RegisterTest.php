@@ -1,6 +1,7 @@
 <?php
 
 use App\Livewire\Auth\Register;
+use App\Models\User;
 use Livewire\Features\SupportValidation\TestsValidation;
 use Livewire\Livewire;
 
@@ -28,6 +29,10 @@ it('should be able to register a new user in the system', function(){
 
     assertDatabaseCount('users', count:1);
 
+    expect(auth()->check())
+        ->and(auth()->user())
+        ->id->toBe(User::first()->id);
+
     
 });
 
@@ -44,5 +49,6 @@ test('validation rules', function($f){
     'email::email' => (object)['field'=>'email', 'value' => 'not-an-email', 'rule' => 'email'],
     'email::max:255' => (object)['field'=>'email', 'value' => str_repeat('*' .'@auditar.com.br', 256), 'rule' => 'email'],
     'email::confirmed' => (object)['field'=>'email', 'value' => 'marco.junior@auditar.com.br', 'rule' => 'confirmed'],
+    'email::unique' => (object)['field'=>'email', 'value' => 'marco.junior@auditar.com.br', 'rule' => 'unique'],
     'password::required' => (object)['field'=>'password', 'value' => '', 'rule' => 'required'],
 ]);
