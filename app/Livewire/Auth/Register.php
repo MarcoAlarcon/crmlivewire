@@ -9,10 +9,13 @@ use Livewire\Component;
 
 class Register extends Component
 {
-    #[Validate('required', 'max:255', message:'Campo nome é obrigatório')]
+    #[Validate('required', message:'Campo nome é obrigatório')]
+    #[Validate('max:255', message:'Campo nome deve ter no máximo 255 caracteres')]
     public ?string $name = null;
 
-    #[Validate('required', 'email', 'max:255', message:'Campo email é obrigatório')]
+    #[Validate('required', message:'Campo e-mail é obrigatório')]
+    #[Validate('email',  message:'Campo e-mail deve ser no formato de e-mail: exemplo@exemplo.com')]
+    #[Validate('max:255', message:'Campo e-mail deve ter no máximo 255 caracteres')]
     public ?string $email = null;
 
     #[Validate('required', 'confirmed', message:'Verificação de email é obrigatória')]
