@@ -2,7 +2,9 @@
 
 use App\Livewire\Auth\Register;
 use App\Models\User;
+use App\Notifications\WelcomeNotification;
 use Illuminate\Foundation\Auth\User as AuthUser;
+use Illuminate\Support\Facades\Notification;
 use Livewire\Features\SupportValidation\TestsValidation;
 use Livewire\Livewire;
 
@@ -62,3 +64,18 @@ test('validation rules', function($f){
     'email::unique' => (object)['field'=>'email', 'value' => 'marco.junior@auditar.com.br', 'rule' => 'unique', 'aField' => 'email_confirmation','aValue' => 'marco.junior@auditar.com.br'],
     'password::required' => (object)['field'=>'password', 'value' => '', 'rule' => 'required'],
 ]);
+
+it('notificates the new user', function() {
+    Notification::fake();
+
+    Livewire::test(Register::class)
+    ->set('name', 'Marco Antonnio Hernandez Alarcon Junior')
+    ->set('email', 'marco.junior@auditar.com.br')
+    ->set('email_confirmation', 'marco.junior@auditar.com.br')
+    ->set('password', 'password')
+    ->call('submit');
+
+    $user = User:: whereEmail('marco.junior@auditar.com.br')->firs();
+
+    Notification::assertSentTo($user, WelcomeNotification::class);
+});
