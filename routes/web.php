@@ -1,6 +1,8 @@
 <?php
 
-use App\Livewire\Welcome;
+use App\Livewire\Auth\Register;
 use Illuminate\Support\Facades\Route;
+use Livewire\Volt\Volt;
 
-Route::get('/', Welcome::class);
+Volt::route('/', 'users.index')->name('home');
+Route::get('/register', Register::class)->name('auth.register');
